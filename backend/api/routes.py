@@ -4,21 +4,21 @@ from pydantic import BaseModel
 from ingestion.git_ingestor import clone_repository, collect_files
 from chunking.chunker import chunk_all_files
 from retrieval.retriever import (
-    repo_already_indexed, store_chunks, hybrid_retrieve, get_all_indexed_repos
+    repo_already_indexed,
+    store_chunks,
+    hybrid_retrieve,
+    get_all_indexed_repos,
 )
 from llm.ollama_client import generate_answer, check_ollama_available
 
 router = APIRouter()
 
-
 class IndexRequest(BaseModel):
     github_url: str
-
 
 class ChatRequest(BaseModel):
     question: str
     repo_name: str
-
 
 @router.post("/index")
 async def index_repository(req: IndexRequest):
@@ -61,7 +61,6 @@ async def index_repository(req: IndexRequest):
         "files_indexed": len(files),
         "chunks_created": len(chunks)
     }
-
 
 @router.post("/chat")
 async def chat(req: ChatRequest):

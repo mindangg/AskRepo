@@ -1,5 +1,5 @@
 import requests
-import json
+
 from config import OLLAMA_BASE_URL, OLLAMA_MODEL
 
 SYSTEM_PROMPT = """You are a code assistant answering questions about a GitHub repository.
