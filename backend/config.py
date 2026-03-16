@@ -6,7 +6,7 @@ load_dotenv()
 CHROMA_PATH = os.getenv("CHROMA_PATH", "./chroma_db")
 REPOS_PATH = os.getenv("REPOS_PATH", "./cloned_repos")
 OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
-OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "deepseek-coder-v2")
+OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "deepseek-coder:6.7b")
 EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "BAAI/bge-small-en-v1.5")
 COLLECTION_NAME = os.getenv("COLLECTION_NAME", "repo_rag")
 
