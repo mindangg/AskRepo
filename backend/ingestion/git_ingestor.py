@@ -5,7 +5,6 @@ from config import REPOS_PATH, SUPPORTED_EXTENSIONS, IGNORED_DIRS
 
 
 def get_repo_name(github_url: str) -> str:
-    """Extract repo name from GitHub URL."""
     url = github_url.rstrip("/")
     if url.endswith(".git"):
         url = url[:-4]
@@ -13,11 +12,6 @@ def get_repo_name(github_url: str) -> str:
 
 
 def clone_repository(github_url: str) -> tuple[str, str]:
-    """
-    Clone the GitHub repository if not already cloned.
-    Returns (repo_path, repo_name).
-    Raises ValueError on invalid URL, RuntimeError on clone failure.
-    """
     if not github_url.startswith("https://github.com/"):
         raise ValueError(f"Invalid GitHub URL: {github_url}")
 
@@ -50,10 +44,6 @@ def clone_repository(github_url: str) -> tuple[str, str]:
 
 
 def collect_files(repo_path: str) -> list[dict]:
-    """
-    Walk the repo and collect all indexable files.
-    Returns list of dicts with path and content.
-    """
     files = []
     repo_path_obj = Path(repo_path)
 

@@ -34,7 +34,6 @@ def get_or_create_collection():
 
 
 def repo_already_indexed(repo_name: str) -> bool:
-    """Check if repo_name already has documents in ChromaDB."""
     collection = get_or_create_collection()
     results = collection.get(
         where={"repo_name": repo_name},
@@ -44,7 +43,6 @@ def repo_already_indexed(repo_name: str) -> bool:
 
 
 def get_all_indexed_repos() -> list[str]:
-    """Return all unique repo names stored in ChromaDB."""
     collection = get_or_create_collection()
     try:
         results = collection.get(include=["metadatas"])
@@ -58,7 +56,6 @@ def get_all_indexed_repos() -> list[str]:
 
 
 def store_chunks(chunks: list[dict]):
-    """Store chunks and their embeddings in ChromaDB."""
     collection = get_or_create_collection()
 
     texts = [c["content"] for c in chunks]
@@ -93,7 +90,6 @@ def store_chunks(chunks: list[dict]):
 
 
 def _normalize(scores: list[float]) -> list[float]:
-    """Normalize scores to [0, 1]."""
     if not scores:
         return scores
     min_s = min(scores)

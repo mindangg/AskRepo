@@ -3,158 +3,102 @@ import IndexScreen from "./components/IndexScreen.jsx";
 import ChatScreen from "./components/ChatScreen.jsx";
 import { fetchRepos } from "./api/client.js";
 
+function GridIcon({ size = 14 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 14 14" fill="none">
+      <rect x="2" y="2" width="4" height="4" rx="1" fill="white" />
+      <rect x="8" y="2" width="4" height="4" rx="1" fill="white" opacity="0.5" />
+      <rect x="2" y="8" width="4" height="4" rx="1" fill="white" opacity="0.5" />
+      <rect x="8" y="8" width="4" height="4" rx="1" fill="white" opacity="0.25" />
+    </svg>
+  );
+}
+
+function HomeIcon() {
+  return (
+    <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+      <path d="M1.5 6L6.5 1.5l5 4.5V11H8.5V8h-4v3H1.5V6z" stroke="currentColor" strokeWidth="1.25" fill="none" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function ChatIcon() {
+  return (
+    <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+      <path d="M11 1.5H2C1.72 1.5 1.5 1.72 1.5 2v7c0 .28.22.5.5.5h1.5v2l2.5-2H11c.28 0 .5-.22.5-.5V2c0-.28-.22-.5-.5-.5z" stroke="currentColor" strokeWidth="1.25" fill="none" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 export default function App() {
-    const [activeRepo, setActiveRepo] = useState(null);
-    const [repos, setRepos] = useState([]);
+  const [activeRepo, setActiveRepo] = useState(null);
+  const [repos, setRepos] = useState([]);
 
-    useEffect(() => {
-        fetchRepos().then(setRepos).catch(() => {});
-    }, []);
+  useEffect(() => {
+    fetchRepos().then(setRepos).catch(() => {});
+  }, []);
 
-    const handleIndexed = (repoName) => {
-        setRepos((prev) =>
-            prev.includes(repoName) ? prev : [...prev, repoName]
-        );
-        setActiveRepo(repoName);
-    };
+  const handleIndexed = (repoName) => {
+    setRepos((prev) => (prev.includes(repoName) ? prev : [...prev, repoName]));
+    setActiveRepo(repoName);
+  };
 
-    return (
-        <div
-            style={{
-                display: "flex",
-                flexDirection: "column",
-                height: "100vh",
-                overflow: "hidden",
-                background: "var(--color-surface-0)",
-            }}
-        >
-            {/* ── Header ─────────────────────────────────── */}
-            <header
-                style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "0.75rem",
-                    padding: "0 1.5rem",
-                    height: "52px",
-                    borderBottom: "1px solid var(--color-surface-3)",
-                    background: "var(--color-surface-1)",
-                    flexShrink: 0,
-                }}
-            >
-                {/* Wordmark */}
-                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                    <div
-                        style={{
-                            width: "22px",
-                            height: "22px",
-                            border: "1px solid color-mix(in srgb, var(--color-accent) 40%, transparent)",
-                            background: "color-mix(in srgb, var(--color-accent) 8%, transparent)",
-                            borderRadius: "4px",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            fontFamily: "var(--font-mono)",
-                            fontSize: "11px",
-                            fontWeight: "600",
-                            color: "var(--color-accent-bright)",
-                        }}
-                    >
-                        R
-                    </div>
-                    <span
-                        style={{
-                            fontFamily: "var(--font-mono)",
-                            fontWeight: "600",
-                            fontSize: "14px",
-                            letterSpacing: "-0.02em",
-                            color: "var(--color-ink)",
-                        }}
-                    >
-            repo<span style={{ color: "var(--color-accent-bright)" }}>rag</span>
+  return (
+    <div className="app-root">
+      <header className="header">
+
+        {/* Wordmark */}
+        <div className="wordmark">
+          <div className="wordmark__icon">
+            <GridIcon />
+          </div>
+          <span className="wordmark__text">
+            Ask<em>Repo</em>
           </span>
-                </div>
-
-                {/* Badge */}
-                <span
-                    className="tag"
-                    style={{
-                        color: "var(--color-accent-bright)",
-                        borderColor: "color-mix(in srgb, var(--color-accent) 30%, transparent)",
-                        background: "color-mix(in srgb, var(--color-accent) 6%, transparent)",
-                    }}
-                >
-          DeepSeek-Coder-V2
-        </span>
-
-                {/* Active repo breadcrumb */}
-                {activeRepo && (
-                    <>
-                        <div
-                            style={{
-                                width: "1px",
-                                height: "16px",
-                                background: "var(--color-surface-5)",
-                                margin: "0 0.25rem",
-                            }}
-                        />
-                        <span
-                            style={{
-                                fontFamily: "var(--font-mono)",
-                                fontSize: "11px",
-                                color: "var(--color-ink-muted)",
-                                maxWidth: "280px",
-                                overflow: "hidden",
-                                textOverflow: "ellipsis",
-                                whiteSpace: "nowrap",
-                            }}
-                        >
-              {activeRepo}
-            </span>
-
-                        <button
-                            onClick={() => setActiveRepo(null)}
-                            style={{
-                                marginLeft: "auto",
-                                display: "flex",
-                                alignItems: "center",
-                                gap: "0.375rem",
-                                fontFamily: "var(--font-mono)",
-                                fontSize: "11px",
-                                color: "var(--color-ink-muted)",
-                                background: "transparent",
-                                border: "1px solid var(--color-surface-5)",
-                                borderRadius: "6px",
-                                padding: "0.3rem 0.75rem",
-                                cursor: "pointer",
-                                transition: "color 0.15s, border-color 0.15s",
-                            }}
-                            onMouseEnter={(e) => {
-                                e.currentTarget.style.color = "var(--color-ink)";
-                                e.currentTarget.style.borderColor = "var(--color-surface-6)";
-                            }}
-                            onMouseLeave={(e) => {
-                                e.currentTarget.style.color = "var(--color-ink-muted)";
-                                e.currentTarget.style.borderColor = "var(--color-surface-5)";
-                            }}
-                        >
-                            ← back
-                        </button>
-                    </>
-                )}
-            </header>
-
-            {/* ── Body ───────────────────────────────────── */}
-            <main style={{ flex: 1, overflow: "hidden" }}>
-                {activeRepo ? (
-                    <ChatScreen repoName={activeRepo} />
-                ) : (
-                    <IndexScreen
-                        repos={repos}
-                        onIndexed={handleIndexed}
-                        onSelectRepo={setActiveRepo}
-                    />
-                )}
-            </main>
         </div>
-    );
+
+        {/* Pill nav — centered */}
+        <nav className="pill-nav" style={{ position: "absolute", left: "50%", transform: "translateX(-50%)" }}>
+          <button
+            className={`pill-nav__item${!activeRepo ? " pill-nav__item--active" : ""}`}
+            onClick={() => setActiveRepo(null)}
+          >
+            <HomeIcon />
+            Index
+          </button>
+
+          {activeRepo && (
+            <button className="pill-nav__item pill-nav__item--active">
+              <ChatIcon />
+              <span className="pill-nav__item__mono">{activeRepo}</span>
+            </button>
+          )}
+        </nav>
+
+        {/* Right side */}
+        <div>
+          {activeRepo ? (
+            <button className="btn btn--ghost btn--sm" onClick={() => setActiveRepo(null)}>
+              ← Back
+            </button>
+          ) : (
+            /* Empty placeholder to keep header balanced */
+            <div style={{ width: 72 }} />
+          )}
+        </div>
+      </header>
+
+      <main className="app-main">
+        {activeRepo ? (
+          <ChatScreen repoName={activeRepo} />
+        ) : (
+          <IndexScreen
+            repos={repos}
+            onIndexed={handleIndexed}
+            onSelectRepo={setActiveRepo}
+          />
+        )}
+      </main>
+    </div>
+  );
 }

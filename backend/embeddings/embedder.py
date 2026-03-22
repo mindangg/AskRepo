@@ -13,14 +13,12 @@ def get_embedding_model() -> SentenceTransformer:
 
 
 def embed_texts(texts: list[str]) -> list[list[float]]:
-    """Generate embeddings for a list of texts."""
     model = get_embedding_model()
     embeddings = model.encode(texts, batch_size=32, show_progress_bar=False, normalize_embeddings=True)
     return embeddings.tolist()
 
 
 def embed_query(query: str) -> list[float]:
-    """Generate embedding for a single query."""
     model = get_embedding_model()
     embedding = model.encode([query], normalize_embeddings=True)
     return embedding[0].tolist()

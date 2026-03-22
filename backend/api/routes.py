@@ -29,11 +29,9 @@ async def index_repository(req: IndexRequest):
     except RuntimeError as e:
         raise HTTPException(status_code=400, detail={"error": str(e)})
 
-    # Check if already indexed
     if repo_already_indexed(repo_name):
         return {"status": "already_indexed", "repo_name": repo_name}
 
-    # Collect files
     files = collect_files(repo_path)
     if not files:
         raise HTTPException(
@@ -49,7 +47,6 @@ async def index_repository(req: IndexRequest):
             detail={"error": "No chunks could be generated from the repository files"}
         )
 
-    # Store
     try:
         store_chunks(chunks)
     except Exception as e:

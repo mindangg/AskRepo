@@ -20,7 +20,6 @@ If multiple files are used, cite each one separately."""
 
 
 def check_ollama_available() -> bool:
-    """Check if Ollama is running."""
     try:
         resp = requests.get(f"{OLLAMA_BASE_URL}/api/tags", timeout=5)
         return resp.status_code == 200
@@ -29,7 +28,6 @@ def check_ollama_available() -> bool:
 
 
 def build_context(chunks: list[dict]) -> str:
-    """Build context string from retrieved chunks."""
     context_parts = []
     for chunk in chunks:
         meta = chunk["metadata"]
@@ -41,10 +39,6 @@ def build_context(chunks: list[dict]) -> str:
 
 
 def generate_answer(question: str, chunks: list[dict]) -> dict:
-    """
-    Call Ollama with the question and context chunks.
-    Returns dict with 'answer' and 'citations'.
-    """
     if not check_ollama_available():
         raise ConnectionError("Ollama service unavailable")
 

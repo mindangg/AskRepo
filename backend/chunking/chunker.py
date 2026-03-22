@@ -13,16 +13,10 @@ EXTENSION_TO_LANGUAGE = {
 
 
 def _estimate_tokens(text: str) -> int:
-    """Rough token estimate: ~4 chars per token."""
     return len(text) // 4
 
 
 def chunk_file(file_data: dict, repo_name: str) -> list[dict]:
-    """
-    Split a file into chunks of ~CHUNK_SIZE_TOKENS tokens
-    with CHUNK_OVERLAP_TOKENS overlap.
-    Tracks start_line and end_line for each chunk.
-    """
     content = file_data["content"]
     file_path = file_data["file_path"]
     extension = file_data["extension"]
@@ -31,7 +25,6 @@ def chunk_file(file_data: dict, repo_name: str) -> list[dict]:
     lines = content.splitlines()
     chunks = []
 
-    # Build token-aware chunks by accumulating lines
     chunk_lines = []
     chunk_token_count = 0
     start_line = 1
@@ -42,7 +35,6 @@ def chunk_file(file_data: dict, repo_name: str) -> list[dict]:
         line_tokens = _estimate_tokens(line) + 1  # +1 for newline
 
         if chunk_token_count + line_tokens > CHUNK_SIZE_TOKENS and chunk_lines:
-            # Save current chunk
             chunk_text = "\n".join(chunk_lines)
             end_line = start_line + len(chunk_lines) - 1
             chunks.append({
@@ -54,7 +46,6 @@ def chunk_file(file_data: dict, repo_name: str) -> list[dict]:
                 "repo_name": repo_name
             })
 
-            # Calculate overlap: step back CHUNK_OVERLAP_TOKENS worth of lines
             overlap_tokens = 0
             overlap_lines = []
             for line_back in reversed(chunk_lines):
@@ -64,7 +55,6 @@ def chunk_file(file_data: dict, repo_name: str) -> list[dict]:
                 overlap_lines.insert(0, line_back)
                 overlap_tokens += lt
 
-            # Restart from overlap
             chunk_lines = overlap_lines
             chunk_token_count = overlap_tokens
             start_line = end_line - len(overlap_lines) + 1
@@ -73,7 +63,6 @@ def chunk_file(file_data: dict, repo_name: str) -> list[dict]:
             chunk_token_count += line_tokens
             i += 1
 
-    # Final chunk
     if chunk_lines:
         chunk_text = "\n".join(chunk_lines)
         end_line = start_line + len(chunk_lines) - 1
@@ -90,7 +79,6 @@ def chunk_file(file_data: dict, repo_name: str) -> list[dict]:
 
 
 def chunk_all_files(files: list[dict], repo_name: str) -> list[dict]:
-    """Chunk all collected files."""
     all_chunks = []
     for file_data in files:
         chunks = chunk_file(file_data, repo_name)

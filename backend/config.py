@@ -20,7 +20,7 @@ SUPPORTED_EXTENSIONS = {
 IGNORED_DIRS = {
     "node_modules", ".git", "dist", "build", "venv",
     "__pycache__", ".venv", ".mypy_cache", ".pytest_cache",
-    "coverage", ".next", ".nuxt", "target", "out"
+    "coverage", ".next", ".nuxt", "target", "out", ".idea", ".vscode"
 }
 
 CHUNK_SIZE_TOKENS = 1200
