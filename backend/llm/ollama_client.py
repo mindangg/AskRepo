@@ -59,7 +59,9 @@ Answer strictly using the context above. Include file citations."""
         "stream": False,
         "options": {
             "temperature": 0.1,
-            "num_ctx": 8192
+            "num_ctx": 4096,
+            "num_thread": 12,
+            "num_gpu": 25
         }
     }
 
